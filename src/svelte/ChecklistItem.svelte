@@ -8,6 +8,7 @@
   export let item: TodoItem
   export let lookAndFeel: LookAndFeel
   export let app: App
+  export let indent: number
 
   let contentDiv: HTMLDivElement
 
@@ -31,10 +32,11 @@
   }
   $: {
     if (contentDiv) contentDiv.innerHTML = item.rawHTML
+    indent = item.spacesIndented
   }
 </script>
 
-<li class={`${lookAndFeel}`}>
+<li class={`${lookAndFeel}`} style:margin-left={`${18 * indent}px`}>
   <button
     class="toggle"
     on:click={(ev) => {
