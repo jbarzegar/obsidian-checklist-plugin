@@ -110,19 +110,57 @@ export const parseTodos = async (
   return todosForUpdatedFiles
 }
 
+// avoid infinite loops and potentially crashing obsidian
+// TODO: make this configurable but 10k sub items should be more than reasonable
+const MAX_SUB_ITEM_COUNT = 10000 as const;
+
 export const toggleTodoItem = async (item: TodoItem, app: App) => {
   const file = getFileFromPath(app.vault, item.filePath)
   if (!file) return
   const currentFileContents = await app.vault.read(file)
   const currentFileLines = getAllLinesFromFile(currentFileContents)
   if (!currentFileLines[item.line].includes(item.originalText)) return
-  const newData = setTodoStatusAtLineTo(
+  let newData = setTodoStatusAtLineTo(
     currentFileLines,
     item.line,
     !item.checked,
   )
-  app.vault.modify(file, newData)
+
+  // recursively close all subtasks if they exist. subtasks are
+  // assumed as lines that start with "\t" (tab) will cover all
+  // nested subtasks still, limitations exist where toggling a
+  // main task __WILL NOT__ enable child tasks next line's a
+  // subtask!
+  // this should be indent aware, so a subtask can only close
+  // todos with a lower subtask than itself
+  // eg: if subtask is indented once - it will only close
+  // proceeding tasks with > 1 indention
+  //
+  let i = item.line + 1
+  let nextLine = currentFileLines[i]
+  if (nextLine.startsWith("\t")) {
+    let indents = nextLine.split("\t").length - 1
+    // while loop should stop after a sibling element is hit
+    // eg when the current tracked indents is still larger than the upcoming line
+    // or when MAX_SUB_ITEM_COUNT is reached (here to avoid infinite loops)
+    while (indents > item.spacesIndented && i <= MAX_SUB_ITEM_COUNT) {
+      // mutate data to include togged todo item
+      newData = setTodoStatusAtLineTo(currentFileLines, i, !item.checked)
+      // shift to next line
+      i++
+      nextLine = currentFileLines[i]
+      indents = (nextLine?.split("\t").length || 0) - 1
+    }
+    // extremely unlikely to hit this unless someone has a 10000+ subtask list
+    if (i >= MAX_SUB_ITEM_COUNT) {
+      throw new Error("Max call stack exceeded")
+    }
+  }
+
+  app.vault.modify(file, newData);
+  // re-render
   item.checked = !item.checked
+
 }
 
 const findAllTodosInFile = (file: FileInfo): TodoItem[] => {

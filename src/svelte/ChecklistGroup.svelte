@@ -9,6 +9,7 @@
   export let group: TodoGroup
   export let isCollapsed: boolean
   export let lookAndFeel: LookAndFeel
+  export let indentSubtasks: boolean
   export let app: App
   export let onToggle: (id: string) => void
 
