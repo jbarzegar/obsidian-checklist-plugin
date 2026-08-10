@@ -17,8 +17,8 @@
   let contentDiv: HTMLDivElement
 
   const toggleItem = async (item: TodoItem) => {
-    toggleTodoItem(item, app)
-  }
+    toggleTodoItem(item, app, subtaskCompleteRecursively)
+ }
 
   const handleClick = (ev: MouseEvent, item?: TodoItem) => {
     const target: HTMLElement = ev.target as any

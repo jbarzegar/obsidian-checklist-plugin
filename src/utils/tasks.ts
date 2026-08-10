@@ -114,7 +114,7 @@ export const parseTodos = async (
 // TODO: make this configurable but 10k sub items should be more than reasonable
 const MAX_SUB_ITEM_COUNT = 10000 as const;
 
-export const toggleTodoItem = async (item: TodoItem, app: App) => {
+export const toggleTodoItem = async (item: TodoItem, app: App, recursive: boolean) => {
   const file = getFileFromPath(app.vault, item.filePath)
   if (!file) return
   const currentFileContents = await app.vault.read(file)
