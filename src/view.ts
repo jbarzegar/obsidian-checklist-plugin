@@ -103,6 +103,7 @@ export default class TodoListView extends ItemView {
       indentSubtasks: this.plugin.getSettingValue('indentSubtasks'),
       subtaskIndentation: this.plugin.getSettingValue("subtaskIndentation"),
       subGroups: this.plugin.getSettingValue('subGroups'),
+      subtaskCompleteRecursively: this.plugin.getSettingValue("subtaskCompleteRecursively"),
       _collapsedSections: this.plugin.getSettingValue('_collapsedSections'),
       _hiddenTags: this.plugin.getSettingValue('_hiddenTags'),
       app: this.app,

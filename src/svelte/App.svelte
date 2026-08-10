@@ -9,6 +9,7 @@
   export let lookAndFeel: LookAndFeel
   export let indentSubtasks: boolean
   export let subtaskIndentation: number
+  export let subtaskCompleteRecursively: boolean
   export let _collapsedSections: string[]
   export let _hiddenTags: string[]
   export let updateSetting: (updates: Partial<TodoSettings>) => Promise<void>

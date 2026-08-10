@@ -136,24 +136,27 @@ export const toggleTodoItem = async (item: TodoItem, app: App) => {
   // eg: if subtask is indented once - it will only close
   // proceeding tasks with > 1 indention
   //
-  let i = item.line + 1
-  let nextLine = currentFileLines[i]
-  if (nextLine?.startsWith("\t")) {
-    let indents = nextLine.split("\t").length - 1
-    // while loop should stop after a sibling element is hit
-    // eg when the current tracked indents is still larger than the upcoming line
-    // or when MAX_SUB_ITEM_COUNT is reached (here to avoid infinite loops)
-    while (indents > item.spacesIndented && i <= MAX_SUB_ITEM_COUNT) {
-      // mutate data to include togged todo item
-      newData = setTodoStatusAtLineTo(currentFileLines, i, !item.checked)
-      // shift to next line
-      i++
-      nextLine = currentFileLines[i]
-      indents = (nextLine?.split("\t").length || 0) - 1
-    }
-    // extremely unlikely to hit this unless someone has a 10000+ subtask list
-    if (i >= MAX_SUB_ITEM_COUNT) {
-      throw new Error("Max call stack exceeded")
+  if (recursive) {
+    const tabChar = "\t" as const
+    let i = item.line + 1
+    let nextLine = currentFileLines[i]
+    if (nextLine?.startsWith(tabChar)) {
+      let indents = nextLine.split(tabChar).length - 1
+      // while loop should stop after a sibling element is hit
+      // eg when the current tracked indents is still larger than the upcoming line
+      // or when MAX_SUB_ITEM_COUNT is reached (here to avoid infinite loops)
+      while (indents > item.spacesIndented && i <= MAX_SUB_ITEM_COUNT) {
+        // mutate data to include togged todo item
+        newData = setTodoStatusAtLineTo(currentFileLines, i, !item.checked)
+        // shift to next line
+        i++
+        nextLine = currentFileLines[i]
+        indents = (nextLine?.split(tabChar).length || 0) - 1
+      }
+      // extremely unlikely to hit this unless someone has a 10000+ subtask list
+      if (i >= MAX_SUB_ITEM_COUNT) {
+        throw new Error("Max call stack exceeded")
+      }
     }
   }
 

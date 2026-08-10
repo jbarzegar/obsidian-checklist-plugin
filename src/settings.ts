@@ -19,6 +19,8 @@ export interface TodoSettings {
   indentSubtasks: boolean
   // number in px
   subtaskIndentation: number
+  // completing the parent completes all children
+  subtaskCompleteRecursively: boolean
   _collapsedSections: string[]
   _hiddenTags: string[]
 }
@@ -38,6 +40,7 @@ export const DEFAULT_SETTINGS: TodoSettings = {
   lookAndFeel: 'classic',
   indentSubtasks: false,
   subtaskIndentation: 16,
+  subtaskCompleteRecursively: false,
   _collapsedSections: [],
   _hiddenTags: [],
 }
@@ -218,6 +221,12 @@ export class TodoSettingTab extends PluginSettingTab {
           await this.plugin.updateSettings({ subtaskIndentation: v })
         })
 
+    new Setting(this.containerEl).setName("==Experimental== Recursively close subtasks")
+      .addToggle(tl => {
+        tl.setValue(this.plugin.getSettingValue("subtaskCompleteRecursively"))
+        tl.onChange(async (v: boolean) => {
+          await this.plugin.updateSettings({ subtaskCompleteRecursively: v })
+        })
       })
 
     /** ADVANCED */

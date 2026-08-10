@@ -86,6 +86,7 @@ export default class TodoPlugin extends Plugin {
       'lookAndFeel',
       'indentSubtasks',
       'subtaskIndentation',
+      'subtaskCompleteRecursively',
       '_collapsedSections',
     ]
     const onlyReGroupWhenChanges = [
