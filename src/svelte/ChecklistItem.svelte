@@ -9,6 +9,8 @@
   export let lookAndFeel: LookAndFeel
   export let app: App
   export let indent: number
+  // px
+  export let spacing = 18
 
   let contentDiv: HTMLDivElement
 
@@ -36,7 +38,7 @@
   }
 </script>
 
-<li class={`${lookAndFeel}`} style:margin-left={`${18 * indent}px`}>
+<li class={`${lookAndFeel}`} style:margin-left={`${spacing * indent}px`}>
   <button
     class="toggle"
     on:click={(ev) => {
