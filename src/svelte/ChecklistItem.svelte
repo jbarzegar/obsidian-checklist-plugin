@@ -12,7 +12,7 @@
   export let app: App
   export let indent: number
   // px
-  export let spacing = 20
+  export let subtaskIndentation: number
 
   let contentDiv: HTMLDivElement
 
@@ -40,7 +40,9 @@
   }
 </script>
 
-<li class={`${lookAndFeel}`} style:margin-left={`${spacing * indent}px`}>
+<li
+  class={`${lookAndFeel}`}
+  style:margin-left={`${subtaskIndentation * indent}px`}>
   <button
     class="toggle"
     on:click={(ev) => {

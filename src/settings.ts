@@ -17,6 +17,8 @@ export interface TodoSettings {
   includeFiles: string
   lookAndFeel: LookAndFeel
   indentSubtasks: boolean
+  // number in px
+  subtaskIndentation: number
   _collapsedSections: string[]
   _hiddenTags: string[]
 }
@@ -35,6 +37,7 @@ export const DEFAULT_SETTINGS: TodoSettings = {
   includeFiles: '',
   lookAndFeel: 'classic',
   indentSubtasks: false,
+  subtaskIndentation: 16,
   _collapsedSections: [],
   _hiddenTags: [],
 }
@@ -199,12 +202,22 @@ export class TodoSettingTab extends PluginSettingTab {
         })
       })
 
-    new Setting(this.containerEl).setName("Indent Subtasks")
+    new Setting(this.containerEl).setName("==Experimental== Indent Subtasks")
       .addToggle(toggle => {
         toggle.setValue(this.plugin.getSettingValue('indentSubtasks'))
         toggle.onChange(async value => {
           await this.plugin.updateSettings({ indentSubtasks: value })
         })
+      })
+
+    new Setting(this.containerEl).setName("==Experimental== Indent subtasks")
+      .addSlider(sl => {
+        sl.setLimits(4, 24, 4)
+        sl.setValue(this.plugin.getSettingValue("subtaskIndentation"))
+        sl.onChange(async (v: number) => {
+          await this.plugin.updateSettings({ subtaskIndentation: v })
+        })
+
       })
 
     /** ADVANCED */

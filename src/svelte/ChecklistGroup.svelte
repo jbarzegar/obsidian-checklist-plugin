@@ -10,6 +10,7 @@
   export let isCollapsed: boolean
   export let lookAndFeel: LookAndFeel
   export let indentSubtasks: boolean
+  export let subtaskIndentation: number
   export let app: App
   export let onToggle: (id: string) => void
 
@@ -44,7 +45,12 @@
   {#if !isCollapsed}
     <ul>
       {#each group.todos as item}
-        <ChecklistItem {item} {indentSubtasks} {lookAndFeel} {app} />
+        <ChecklistItem
+          {item}
+          {subtaskIndentation}
+          {indentSubtasks}
+          {lookAndFeel}
+          {app} />
       {/each}
     </ul>
   {/if}
