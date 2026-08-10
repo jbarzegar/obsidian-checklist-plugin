@@ -138,7 +138,7 @@ export const toggleTodoItem = async (item: TodoItem, app: App) => {
   //
   let i = item.line + 1
   let nextLine = currentFileLines[i]
-  if (nextLine.startsWith("\t")) {
+  if (nextLine?.startsWith("\t")) {
     let indents = nextLine.split("\t").length - 1
     // while loop should stop after a sibling element is hit
     // eg when the current tracked indents is still larger than the upcoming line
