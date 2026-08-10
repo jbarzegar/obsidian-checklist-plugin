@@ -85,6 +85,7 @@ export default class TodoPlugin extends Plugin {
       'autoRefresh',
       'lookAndFeel',
       'indentSubtasks',
+      'subtaskIndentation',
       '_collapsedSections',
     ]
     const onlyReGroupWhenChanges = [
