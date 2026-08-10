@@ -7,10 +7,12 @@
 
   export let item: TodoItem
   export let lookAndFeel: LookAndFeel
+  export let indentSubtasks: boolean
+
   export let app: App
   export let indent: number
   // px
-  export let spacing = 18
+  export let spacing = 20
 
   let contentDiv: HTMLDivElement
 
@@ -34,7 +36,7 @@
   }
   $: {
     if (contentDiv) contentDiv.innerHTML = item.rawHTML
-    indent = item.spacesIndented
+    indent = indentSubtasks ? item.spacesIndented : 0
   }
 </script>
 

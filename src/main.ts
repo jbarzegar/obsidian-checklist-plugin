@@ -84,6 +84,7 @@ export default class TodoPlugin extends Plugin {
     const onlyRepaintWhenChanges = [
       'autoRefresh',
       'lookAndFeel',
+      'indentSubtasks',
       '_collapsedSections',
     ]
     const onlyReGroupWhenChanges = [

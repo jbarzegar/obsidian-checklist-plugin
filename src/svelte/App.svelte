@@ -7,6 +7,7 @@
 
   export let todoTags: string[]
   export let lookAndFeel: LookAndFeel
+  export let indentSubtasks: boolean
   export let _collapsedSections: string[]
   export let _hiddenTags: string[]
   export let updateSetting: (updates: Partial<TodoSettings>) => Promise<void>
@@ -53,6 +54,7 @@
         <ChecklistGroup
           {group}
           {app}
+          {indentSubtasks}
           {lookAndFeel}
           isCollapsed={_collapsedSections.includes(group.id)}
           onToggle={toggleGroup}

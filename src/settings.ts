@@ -16,6 +16,7 @@ export interface TodoSettings {
   sortDirectionSubGroups: SortDirection
   includeFiles: string
   lookAndFeel: LookAndFeel
+  indentSubtasks: boolean
   _collapsedSections: string[]
   _hiddenTags: string[]
 }
@@ -33,6 +34,7 @@ export const DEFAULT_SETTINGS: TodoSettings = {
   sortDirectionSubGroups: 'new->old',
   includeFiles: '',
   lookAndFeel: 'classic',
+  indentSubtasks: false,
   _collapsedSections: [],
   _hiddenTags: [],
 }
@@ -193,7 +195,15 @@ export class TodoSettingTab extends PluginSettingTab {
         dropdown.addOption('compact', 'Compact')
         dropdown.setValue(this.plugin.getSettingValue('lookAndFeel'))
         dropdown.onChange(async (value: LookAndFeel) => {
-          await this.plugin.updateSettings({lookAndFeel: value})
+          await this.plugin.updateSettings({ lookAndFeel: value })
+        })
+      })
+
+    new Setting(this.containerEl).setName("Indent Subtasks")
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('indentSubtasks'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({ indentSubtasks: value })
         })
       })
 
